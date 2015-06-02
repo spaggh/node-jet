@@ -101,6 +101,31 @@ describe('Jet module', function () {
 		});
 	});
 
+	it('peer.config({name: "Asd"})', function (done) {
+		var peer = new jet.Peer({
+			url: 'ws://localhost:' + testWsPort
+		});
+		peer.config({
+			name: "Asd"
+		}).then(function () {
+			peer.close();
+			done();
+		});
+	});
+
+	it('peer.config({unknown: "Asd"}) fails', function (done) {
+		var peer = new jet.Peer({
+			url: 'ws://localhost:' + testWsPort
+		});
+		peer.config({
+			unknown: "Asd"
+		}).catch(function (err) {
+			expect(err.data).to.equal('unsupported config field');
+			peer.close();
+			done();
+		});
+	});
+
 	describe('a connected jet peer', function () {
 		var peer;
 
